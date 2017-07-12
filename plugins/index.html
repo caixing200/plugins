@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<style type="text/css">
+			body>div {
+				width: 100%;
+				margin: 10% auto;
+			}
+			
+			body>div>h1 {
+				text-align: center;
+				margin-bottom: 10%;
+				font-size: 3rem;
+				font-weight: 900;
+			}
+			
+			body>div>div {
+				width: 70%;
+				margin: 0 auto;
+			}
+			
+			body>div>div:nth-child(2)>input {
+				height: 2rem;
+				padding: 3px 3px 3px 1rem;
+			}
+			
+			body>div>div:nth-child(3)>ul {
+				width: 85%;
+				height: 13rem;
+				overflow-x: scroll;
+				margin: 0 auto;
+			}
+			
+			body>div>div:nth-child(4) {
+				height: 2rem;
+				text-align: center;
+				margin-top: 2rem;
+			}
+			
+			body>div>div:nth-child(4)>button {
+				font-size: 1.5rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<h1>狼人杀记事本</h1>
+			<div>
+				<span>请输入游戏人数:</span>
+				<input type="number" placeholder="人数" id="num" />
+			</div>
+			<div>
+				<span>请设定游戏角色:</span>
+				<ul>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>平民</label>
+							<input class="checkBox" name="checkbox1" value="平民" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>狼人</label>
+							<input class="checkBox" name="checkbox2" value="狼人" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>预言家</label>
+							<input class="checkBox" name="checkbox3" value="预言家" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>女巫</label>
+							<input class="checkBox" name="checkbox4" value="女巫" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>猎人</label>
+							<input class="checkBox" name="checkbox5" value="猎人" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>炸弹人</label>
+							<input class="checkBox" name="checkbox6" value="炸弹人" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>守卫</label>
+							<input class="checkBox" name="checkbox7" value="守卫" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>白痴</label>
+							<input class="checkBox" name="checkbox8" value="白痴" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>白狼王</label>
+							<input class="checkBox" name="checkbox9" value="白狼王" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>骑士</label>
+							<input class="checkBox" name="checkbox10" value="骑士" type="checkbox">
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<button type="button" class="mui-btn" id="start">启动记事本</button>
+			</div>
+
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			(function(win) {
+				localStorage.removeItem('pluginData');
+				$('#start').on('tap', function() {
+					var data = {};
+					data.num = $('#num').val();
+					data.roleList = getCheckBoxRes('checkBox');
+					localStorage.setItem('pluginData',JSON.stringify(data));
+					openPage();
+				})
+				//生成选中的角色列表
+				function getCheckBoxRes(className) {
+					var rdsObj = $('.checkBox');
+					var checkVal = new Array();
+					var k = 0;
+					for(i = 0; i < rdsObj.length; i++) {
+						if(rdsObj[i].checked) {
+							checkVal[k] = rdsObj[i].value;
+							k++;
+						}
+					}
+					return checkVal;
+				}
+				//打开记事页面
+				function openPage(){
+					window.location.href = 'pages.html';
+				}
+				
+			})(window)
+		</script>
+	</body>
+
+</html>
