@@ -109,14 +109,68 @@
 					</li>
 					<li>
 						<div class="mui-input-row mui-checkbox">
+							<label>隐狼</label>
+							<input class="checkBox" name="checkbox9" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
 							<label>白狼王</label>
-							<input class="checkBox" name="checkbox9" value="白狼王" type="checkbox">
+							<input class="checkBox" name="checkbox10" value="白狼王" type="checkbox">
 						</div>
 					</li>
 					<li>
 						<div class="mui-input-row mui-checkbox">
 							<label>骑士</label>
-							<input class="checkBox" name="checkbox10" value="骑士" type="checkbox">
+							<input class="checkBox" name="checkbox11" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>丘比特</label>
+							<input class="checkBox" name="checkbox12" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>盗贼</label>
+							<input class="checkBox" name="checkbox13" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>野孩子</label>
+							<input class="checkBox" name="checkbox14" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>训熊师</label>
+							<input class="checkBox" name="checkbox15" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>狼王</label>
+							<input class="checkBox" name="checkbox16" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>狼美人</label>
+							<input class="checkBox" name="checkbox17" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>老流氓</label>
+							<input class="checkBox" name="checkbox18" value="骑士" type="checkbox">
+						</div>
+					</li>
+					<li>
+						<div class="mui-input-row mui-checkbox">
+							<label>禁言长老</label>
+							<input class="checkBox" name="checkbox19" value="骑士" type="checkbox">
 						</div>
 					</li>
 				</ul>
@@ -134,10 +188,20 @@
 				localStorage.removeItem('pluginData');
 				$('#start').on('tap', function() {
 					var data = {};
-					data.num = $('#num').val();
-					data.roleList = getCheckBoxRes('checkBox');
-					localStorage.setItem('pluginData',JSON.stringify(data));
-					openPage();
+					var checkNum = /^[0-9]*$/;
+					var num = $('#num').val();
+					if(checkNum.test(num)) {
+						if(num >= 6 && num <= 16) {
+							data.num = num;
+							data.roleList = getCheckBoxRes('checkBox');
+							localStorage.setItem('pluginData', JSON.stringify(data));
+							openPage();
+						} else {
+							alert('参与人数为6至16人');
+						}
+					} else {
+						alert('请输入6至16之间的数字')
+					}
 				})
 				//生成选中的角色列表
 				function getCheckBoxRes(className) {
@@ -153,10 +217,10 @@
 					return checkVal;
 				}
 				//打开记事页面
-				function openPage(){
+				function openPage() {
 					window.location.href = 'pages.html';
 				}
-				
+
 			})(window)
 		</script>
 	</body>
