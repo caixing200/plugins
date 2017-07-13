@@ -26,7 +26,7 @@
 			}
 			
 			body>div>div:nth-child(2)>input {
-				height: 2rem;
+				height: 2.5rem;
 				padding: 3px 3px 3px 1rem;
 			}
 			
@@ -45,6 +45,10 @@
 			
 			body>div>div:nth-child(4)>button {
 				font-size: 1.5rem;
+			}
+			
+			.mui-toast-container {
+				bottom: 57%;
 			}
 		</style>
 	</head>
@@ -188,7 +192,7 @@
 				localStorage.removeItem('pluginData');
 				$('#start').on('tap', function() {
 					var data = {};
-					var checkNum = /^[0-9]*$/;
+					var checkNum = /^[0-9]+$/;
 					var num = $('#num').val();
 					if(checkNum.test(num)) {
 						if(num >= 6 && num <= 16) {
@@ -197,10 +201,16 @@
 							localStorage.setItem('pluginData', JSON.stringify(data));
 							openPage();
 						} else {
-							alert('参与人数为6至16人');
+							mui.toast('游戏人数为6至16人', {
+								duration: 2000,
+								type: 'div'
+							});
 						}
 					} else {
-						alert('请输入6至16之间的数字')
+						mui.toast('请输入6至16之间的数字', {
+							duration: 2000,
+							type: 'div'
+						});
 					}
 				})
 				//生成选中的角色列表
@@ -214,11 +224,20 @@
 							k++;
 						}
 					}
-					return checkVal;
+					if(checkVal.length == 0){
+						mui.toast('请选择游戏角色', {
+							duration: 2000,
+							type: 'div'
+						});
+						return false;
+					}else {
+						return checkVal;
+					}
+						
 				}
 				//打开记事页面
 				function openPage() {
-					window.location.href = 'pages.html';
+					window.location.href = 'page.html';
 				}
 
 			})(window)
