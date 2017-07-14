@@ -468,210 +468,211 @@
 			mui.init();
 		</script>
 		<script type="text/javascript">
-			var data;
-			data = initData();
-			userList(data);
-			pickerList(data);
-			userPicker(data);
-			voteList(data)
-			userBtn();
+			window.onload = function() {
+				var data;
+				data = initData();
+				userList(data);
+				pickerList(data);
+				userPicker(data);
+				voteList(data)
+				userBtn();
 
-			//玩家按钮功能
-			function userBtn() {
-				var ele, pickers, userPickers,userEle;
-				pickers = $('#pickerDiv');
-				userPickers = $('#userPickerDiv');
-				datepickers = $('#dateDiv');
-				$('#dataList>ul>li>.statusBox').on('tap', function(e) {
-					var set = seat(e);
-					ele = null;
-					ele = this;
-					picker(set, pickers);
-				});
-				$('#dataList>ul>li:first-child').off();
-				$('#btnList>ul>li:last-child').on('tap', function(e) {
-					var set = seat(e);
-					ele = null;
-					ele = this;
-					picker(set, pickers);
-				});
-				$('.pickerDiv>div>ul>li').on('tap', function(e) {
-					var picker = $('.pickerDiv');
-					var text = e.target.innerHTML;
-					var btn = $(this).parent().parent().parent().attr('id');
-					console.log(btn);
-					$(ele).html(text);
-					picker.css({
-						display: 'none'
+				//玩家按钮功能
+				function userBtn() {
+					var ele, pickers, userPickers, userEle;
+					pickers = $('#pickerDiv');
+					userPickers = $('#userPickerDiv');
+					datepickers = $('#dateDiv');
+					$('#dataList>ul>li>.statusBox').on('tap', function(e) {
+						var set = seat(e);
+						ele = null;
+						ele = this;
+						picker(set, pickers);
 					});
-					if(btn && btn == 'dateDiv') {
-						return
-					} else {
+					$('#dataList>ul>li:first-child').off();
+					$('#btnList>ul>li:last-child').on('tap', function(e) {
+						var set = seat(e);
+						ele = null;
+						ele = this;
+						picker(set, pickers);
+					});
+					$('.pickerDiv>div>ul>li').on('tap', function(e) {
+						var picker = $('.pickerDiv');
+						var text = e.target.innerHTML;
+						var btn = $(this).parent().parent().parent().attr('id');
+						console.log(btn);
+						$(ele).html(text);
+						picker.css({
+							display: 'none'
+						});
+						if(btn && btn == 'dateDiv') {
+							return
+						} else {
+							$('.cover').addClass('ishide');
+						}
+					});
+					$('.cover').on('tap', function(e) {
+						$('.pickerDiv').css({
+							display: 'none'
+						});
 						$('.cover').addClass('ishide');
-					}
-				});
-				$('.cover').on('tap', function(e) {
-					$('.pickerDiv').css({
-						display: 'none'
+						$('#voteBox').addClass('ishide');
+						$(userEle).removeClass('shadow');
+
 					});
-					$('.cover').addClass('ishide');
-					$('#voteBox').addClass('ishide');
-					$(userEle).removeClass('shadow');
-
-				});
-				$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
-					var set = seat(e);
-					ele = null;
-					ele = this;
-					picker(set, userPickers);
-				});
-				$('#dataList>ul>li:nth-child(1)>span:first-child').on('tap', function(e) {
-					userEle = null;
-					userEle = this;
-					var num = $(this).children().html() - 0;
-					$(this).toggleClass('shadow');
-					$('#voteBox>div:first-child>span:nth-child(2)').html(num);
-					$('#voteBox>ul>li>span').removeClass('mui-badge-primary');
-					$('.cover').removeClass('ishide');
-					$('#voteBox').toggleClass('ishide');
-				});
-				$('#voteBox>div:first-child>span:first-child').on('tap', function(e) {
-					console.log(e);
-					var set = seat(e);
-					ele = null;
-					ele = this;
-					picker(set, datepickers);
-				});
-				$('#voteBox>ul>li').on('tap', function(e) {
-					$(this).children().toggleClass('mui-badge-primary');
-				});
-				$('#voteBox>div:nth-child(3)>button:first-child').on('tap', function(e) {
-					$('#voteBox').toggleClass('ishide');
-					$('.cover').addClass('ishide');
-					$(userEle).removeClass('shadow');
-				});
-				$('#voteBox>div:nth-child(3)>button:last-child').on('tap', function(e) {
-					var list, targetUser, useArr, dateNum, dateList;
-					useArr = [];
-					targetUser = $('#voteBox>div:first-child>span:last-child').html() - 0;
-					dateNum = $('#voteBox>div:first-child>span:first-child').html() - 0;
-					dateList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + dateNum + ')');
-					list = $('#voteBox>ul>li>.mui-badge-primary');
-					$.each(list, function(index, item) {
-						var i = item.innerHTML - 1;
-						dateList[i].innerHTML = targetUser;
+					$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
+						var set = seat(e);
+						ele = null;
+						ele = this;
+						picker(set, userPickers);
 					});
-					$('#voteBox').toggleClass('ishide');
-					$('.cover').addClass('ishide');
-					$(userEle).removeClass('shadow');
-				});
+					$('#dataList>ul>li:nth-child(1)>span:first-child').on('tap', function(e) {
+						userEle = null;
+						userEle = this;
+						var num = $(this).children().html() - 0;
+						$(this).toggleClass('shadow');
+						$('#voteBox>div:first-child>span:nth-child(2)').html(num);
+						$('#voteBox>ul>li>span').removeClass('mui-badge-primary');
+						$('.cover').removeClass('ishide');
+						$('#voteBox').toggleClass('ishide');
+					});
+					$('#voteBox>div:first-child>span:first-child').on('tap', function(e) {
+						console.log(e);
+						var set = seat(e);
+						ele = null;
+						ele = this;
+						picker(set, datepickers);
+					});
+					$('#voteBox>ul>li').on('tap', function(e) {
+						$(this).children().toggleClass('mui-badge-primary');
+					});
+					$('#voteBox>div:nth-child(3)>button:first-child').on('tap', function(e) {
+						$('#voteBox').toggleClass('ishide');
+						$('.cover').addClass('ishide');
+						$(userEle).removeClass('shadow');
+					});
+					$('#voteBox>div:nth-child(3)>button:last-child').on('tap', function(e) {
+						var list, targetUser, useArr, dateNum, dateList;
+						useArr = [];
+						targetUser = $('#voteBox>div:first-child>span:last-child').html() - 0;
+						dateNum = $('#voteBox>div:first-child>span:first-child').html() - 0;
+						dateList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + dateNum + ')');
+						list = $('#voteBox>ul>li>.mui-badge-primary');
+						$.each(list, function(index, item) {
+							var i = item.innerHTML - 1;
+							dateList[i].innerHTML = targetUser;
+						});
+						$('#voteBox').toggleClass('ishide');
+						$('.cover').addClass('ishide');
+						$(userEle).removeClass('shadow');
+					});
+				}
+				//位置
+				function seat(e) {
+					var set, target;
+					set = {};
+					target = e.target;
+					set.mx = target.offsetLeft;
+					set.my = target.offsetTop;
+					set.width = target.offsetWidth;
+					set.height = target.offsetHeight;
+					set.clientWidth = e.path[4].clientWidth;
+					set.clientHeight = e.path[4].clientHeight;
+					return set;
+				}
+				//初始化数据
+				function initData() {
+					var data = JSON.parse(localStorage.getItem('pluginData'));
+					var roleList = data.roleList;
+					var arr = [];
 
-			}
-			//位置
-			function seat(e) {
-				var set, target;
-				set = {};
-				target = e.target;
-				set.mx = target.offsetLeft;
-				set.my = target.offsetTop;
-				set.width = target.offsetWidth;
-				set.height = target.offsetHeight;
-				set.clientWidth = e.path[4].clientWidth;
-				set.clientHeight = e.path[4].clientHeight;
-				return set;
-			}
-			//初始化数据
-			function initData() {
-				var data = JSON.parse(localStorage.getItem('pluginData'));
-				var roleList = data.roleList;
-				var arr = [];
+					$.each(roleList, function(index, item) {
+						var obj = {};
+						obj.value = index + 1;
+						obj.text = item;
+						arr.push(obj);
+					});
+					data.roleList = arr;
+					return data;
+				}
+				//生成选择器列表
+				function pickerList(data) {
+					var box = null;
+					box = $('#picker');
+					box.html('');
+					var html = template("pickers", data);
+					box.html(html);
+				}
 
-				$.each(roleList, function(index, item) {
-					var obj = {};
-					obj.value = index + 1;
-					obj.text = item;
-					arr.push(obj);
-				});
-				data.roleList = arr;
-				return data;
-			}
-			//生成选择器列表
-			function pickerList(data) {
-				var box = null;
-				box = $('#picker');
-				box.html('');
-				var html = template("pickers", data);
-				box.html(html);
-			}
+				function userPicker(data) {
+					var box = null;
+					box = $('#userPicker');
+					box.html('');
+					var html = template("userPickers", data);
+					box.html(html);
+				}
+				//生成玩家列表
+				function userList(data) {
+					var box = null;
+					box = $('#pageBody');
+					box.html('');
+					var html = template("list", data);
+					box.html(html);
+				}
+				//生成投票多选框
+				function voteList(data) {
+					console.log(data);
+					var box = null;
+					box = $('#voteBox>ul');
+					box.html('');
+					var html = template("voteBoxs", data);
+					box.html(html);
+				}
+				//选择器
+				function picker(set, pickers) {
+					var picker, pickerBoxX, pickerBoxY, pickerBoxWidth, pickerBoxHeight, cover;
+					picker = pickers;
+					cover = $('.cover');
+					//				picker.toggleClass('ishide');
+					picker.css({
+						display: 'block',
+						opacity: '0'
+					})
+					cover.removeClass('ishide');
+					pickerBoxWidth = picker.width();
+					pickerBoxHeight = picker.height();
+					pickerBoxX = (set.clientWidth - set.mx) < pickerBoxWidth ? (set.clientWidth - pickerBoxWidth) : set.mx;
+					pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - pickerBoxHeight / 2) + set.height / 2 : 2;
+					picker.css({
+						top: pickerBoxY + 'px',
+						left: pickerBoxX + 'px',
+					});
+					picker.animate({
+						opacity: 1
+					}, 150, 'ease-in');
+				}
 
-			function userPicker(data) {
-				var box = null;
-				box = $('#userPicker');
-				box.html('');
-				var html = template("userPickers", data);
-				box.html(html);
-			}
-			//生成玩家列表
-			function userList(data) {
-				var box = null;
-				box = $('#pageBody');
-				box.html('');
-				var html = template("list", data);
-				box.html(html);
-			}
-			//生成投票多选框
-			function voteList(data) {
-				console.log(data);
-				var box = null;
-				box = $('#voteBox>ul');
-				box.html('');
-				var html = template("voteBoxs", data);
-				box.html(html);
-			}
-			//选择器
-			function picker(set, pickers) {
-				var picker, pickerBoxX, pickerBoxY, pickerBoxWidth, pickerBoxHeight, cover;
-				picker = pickers;
-				cover = $('.cover');
-				//				picker.toggleClass('ishide');
-				picker.css({
-					display: 'block',
-					opacity: '0'
-				})
-				cover.removeClass('ishide');
-				pickerBoxWidth = picker.width();
-				pickerBoxHeight = picker.height();
-				pickerBoxX = (set.clientWidth - set.mx) < pickerBoxWidth ? (set.clientWidth - pickerBoxWidth) : set.mx;
-				pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - pickerBoxHeight / 2) + set.height / 2 : 2;
-				picker.css({
-					top: pickerBoxY + 'px',
-					left: pickerBoxX + 'px',
-				});
-				picker.animate({
-					opacity: 1
-				}, 150, 'ease-in');
-			}
-
-			//详情盒子
-			function box() {
-				var boxBtn = $('.boxShow');
-				var box1, box2, box3;
-				box1 = $('#dataList>.detailsBox');
-				box2 = $('#gameList>.detailsBox');
-				box3 = $('#btnList>.detailsBox');
-				boxBtn.on('tap', function(e) {
-					var index = $(this).attr('data-num');
-					console.log(index);
-					var txt = $(this).html();
-					if(txt && txt == '展开') {
-						$(this).html('收起')
-					} else {
-						$(this).html('展开')
-					}
-					$(box1[index]).toggleClass('ishide');
-					$(box2[index]).toggleClass('ishide');
-					$(box3[index]).toggleClass('ishide');
-				})
+				//详情盒子
+				function box() {
+					var boxBtn = $('.boxShow');
+					var box1, box2, box3;
+					box1 = $('#dataList>.detailsBox');
+					box2 = $('#gameList>.detailsBox');
+					box3 = $('#btnList>.detailsBox');
+					boxBtn.on('tap', function(e) {
+						var index = $(this).attr('data-num');
+						console.log(index);
+						var txt = $(this).html();
+						if(txt && txt == '展开') {
+							$(this).html('收起')
+						} else {
+							$(this).html('展开')
+						}
+						$(box1[index]).toggleClass('ishide');
+						$(box2[index]).toggleClass('ishide');
+						$(box3[index]).toggleClass('ishide');
+					})
+				}
 			}
 		</script>
 	</body>
