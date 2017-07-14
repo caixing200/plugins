@@ -188,56 +188,58 @@
 		<script src="js/zepto.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
-			(function(win) {
-				localStorage.removeItem('pluginData');
-				$('#start').on('tap', function() {
-					var data = {};
-					var checkNum = /^[0-9]+$/;
-					var num = $('#num').val();
-					if(checkNum.test(num)) {
-						if(num >= 6 && num <= 16) {
-							data.num = num;
-							if(getCheckBoxRes().length > 0) {
-								data.roleList = getCheckBoxRes();
-								localStorage.setItem('pluginData', JSON.stringify(data));
-								openPage();
+			window.onload = function() {
+				(function(win) {
+					localStorage.removeItem('pluginData');
+					$('#start').on('tap', function() {
+						var data = {};
+						var checkNum = /^[0-9]+$/;
+						var num = $('#num').val();
+						if(checkNum.test(num)) {
+							if(num >= 6 && num <= 16) {
+								data.num = num;
+								if(getCheckBoxRes().length > 0) {
+									data.roleList = getCheckBoxRes();
+									localStorage.setItem('pluginData', JSON.stringify(data));
+									openPage();
+								} else {
+									mui.toast('请选择游戏角色', {
+										duration: 2000,
+										type: 'div'
+									});
+								}
 							} else {
-								mui.toast('请选择游戏角色', {
+								mui.toast('游戏人数为6至16人', {
 									duration: 2000,
 									type: 'div'
 								});
 							}
 						} else {
-							mui.toast('游戏人数为6至16人', {
+							mui.toast('请输入6至16之间的数字', {
 								duration: 2000,
 								type: 'div'
 							});
 						}
-					} else {
-						mui.toast('请输入6至16之间的数字', {
-							duration: 2000,
-							type: 'div'
-						});
-					}
-				})
-				//生成选中的角色列表
-				function getCheckBoxRes() {
-					var rdsObj = $('.checkBox');
-					var checkVal = new Array();
-					var k = 0;
-					for(i = 0; i < rdsObj.length; i++) {
-						if(rdsObj[i].checked) {
-							checkVal[k] = rdsObj[i].value;
-							k++;
+					})
+					//生成选中的角色列表
+					function getCheckBoxRes() {
+						var rdsObj = $('.checkBox');
+						var checkVal = new Array();
+						var k = 0;
+						for(i = 0; i < rdsObj.length; i++) {
+							if(rdsObj[i].checked) {
+								checkVal[k] = rdsObj[i].value;
+								k++;
+							}
 						}
+						return checkVal;
 					}
-					return checkVal;
-				}
-				//打开记事页面
-				function openPage() {
-					window.location.href = 'page.html';
-				}
-			})(window)
+					//打开记事页面
+					function openPage() {
+						window.location.href = 'page.html';
+					}
+				})(window)
+			}
 		</script>
 	</body>
 

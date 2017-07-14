@@ -484,7 +484,7 @@
 					userPickers = $('#userPickerDiv');
 					datepickers = $('#dateDiv');
 					$('#dataList>ul>li>.statusBox').on('tap', function(e) {
-						alert(1);
+						console.log(e);
 						var set = seat(e);
 						ele = null;
 						ele = this;
@@ -492,7 +492,6 @@
 					});
 
 					$('#btnList>ul>li:last-child').on('tap', function(e) {
-						alert(1);
 						var set = seat(e);
 						ele = null;
 						ele = this;
@@ -523,7 +522,6 @@
 
 					});
 					$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
-						alert(1);
 						var set = seat(e);
 						ele = null;
 						ele = this;
@@ -579,8 +577,8 @@
 					set.my = target.offsetTop;
 					set.width = target.offsetWidth;
 					set.height = target.offsetHeight;
-					set.clientWidth = e.path[4].clientWidth;
-					set.clientHeight = e.path[4].clientHeight;
+					set.clientWidth = target.offsetParent.clientWidth;
+					set.clientHeight = target.offsetParent.clientHeight;
 					return set;
 				}
 				//初始化数据
