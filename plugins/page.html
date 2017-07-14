@@ -484,13 +484,15 @@
 					userPickers = $('#userPickerDiv');
 					datepickers = $('#dateDiv');
 					$('#dataList>ul>li>.statusBox').on('tap', function(e) {
+						alert(1);
 						var set = seat(e);
 						ele = null;
 						ele = this;
 						picker(set, pickers);
 					});
-					$('#dataList>ul>li:first-child').off();
+
 					$('#btnList>ul>li:last-child').on('tap', function(e) {
+						alert(1);
 						var set = seat(e);
 						ele = null;
 						ele = this;
@@ -521,6 +523,7 @@
 
 					});
 					$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
+						alert(1);
 						var set = seat(e);
 						ele = null;
 						ele = this;
