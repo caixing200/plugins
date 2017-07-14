@@ -12,6 +12,7 @@
 			html {
 				background-color: #FFFFFF;
 			}
+			
 			body {
 				padding: 1px;
 				position: relative;
@@ -116,6 +117,7 @@
 				border-top: 1px solid black;
 				border-right: 2px solid black;
 			}
+			
 			#pageBody>div>ul>li:first-child>span:first-child {
 				background-color: #F0F0F0;
 			}
@@ -131,6 +133,7 @@
 			#pageBody>div>ul>li:nth-child(2)>span:last-child {
 				border-right: transparent;
 			}
+			
 			#pageBody>div>ul>li:last-child>span {
 				display: block;
 			}
@@ -164,7 +167,7 @@
 			}
 			
 			.pickerDiv {
-				width: 4rem;
+				width: 3.5rem;
 				overflow: hidden;
 				position: absolute;
 				top: 300px;
@@ -174,7 +177,7 @@
 				z-index: 999;
 			}
 			
-			#cover {
+			.cover {
 				width: 100%;
 				height: 100%;
 				position: absolute;
@@ -192,7 +195,6 @@
 			.pickerDiv>div>ul>li {
 				height: 2rem;
 				line-height: 2rem;
-				
 				font-size: 0.7rem;
 				border-bottom: 1px solid burlywood;
 			}
@@ -254,6 +256,7 @@
 				padding: 0 0 0 5px;
 				font-size: 1rem;
 			}
+			
 			.userBox .mui-badge {
 				background-image: url(img/yuanxinganniu.png);
 				background-size: 100% 100%;
@@ -261,17 +264,89 @@
 				height: 1.5rem;
 				line-height: 1.6rem;
 				padding: 0;
-				
+				font-weight: 600;
+				color: white;
 			}
-			.userBox .mui-badge-blue, .userBox .mui-badge-primary {
+			
+			.userBox .mui-badge-blue,
+			.userBox .mui-badge-primary {
 				background-color: transparent;
 			}
-			/*.detailsBox>ul>li:nth-child(1)>input[type=text] {
-				top: 1px;
+			
+			#voteBox {
+				width: 65%;
+				font-size: 1rem;
+				border: 1px solid silver;
+				border-radius: 5px;
+				box-shadow: 0 0 5px black;
+				position: absolute;
+				top: 20%;
+				left: 17.5%;
+				background-color: seashell;
 			}
-			.detailsBox>ul>li:nth-child(2)>input[type=text] {
-				top: 20px;
-			}*/
+			
+			#voteBox>div:first-child {
+				line-height: 2rem;
+				text-align: center;
+				height: 2rem;
+			}
+			
+			#voteBox>div:first-child>span {
+				display: inline-block;
+				width: 2rem;
+			}
+			
+			#voteBox>div:first-child .mui-badge {
+				padding: 0;
+				height: 75%;
+				font-size: 1rem;
+				line-height: 1.5rem;
+			}
+			
+			#voteBox>div>span:first-child {
+				border-radius: 5px;
+				background-color: burlywood;
+				height: 75%;
+				font-size: 1rem;
+				line-height: 1.5rem;
+				color: red;
+				font-weight: 900;
+				box-shadow: 1px 1px 2px black;
+			}
+			
+			#voteBox>ul {
+				padding: 5px;
+				text-align: center;
+			}
+			
+			#voteBox>ul>li {
+				float: left;
+				width: 20%;
+				height: 2.5rem;
+				line-height: 2rem;
+			}
+			
+			#voteBox>ul>li>span {
+				width: 2rem;
+				height: 2rem;
+				font-size: 1rem;
+				font-weight: 100;
+				line-height: 150%;
+			}
+			
+			#voteBox>div:nth-child(3) {
+				padding: 5px;
+				text-align: center;
+			}
+			
+			#voteBox>div:nth-child(3)>button:first-child {
+				margin-right: 20%;
+			}
+			
+			.shadow {
+				box-shadow: inset 1px 1px 2px #444;
+				transition: all 0.05s;
+			}
 		</style>
 		<script src="js/template-web.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/html" id="list">
@@ -280,7 +355,7 @@
 				<% for(var i = 0; i < num; i++){ %>
 				<ul>
 					<li>
-						<span class="userBox"><span class="mui-badge mui-badge-primary"><%= i+1 %></span></span>
+						<span class="userBox"><span class="mui-badge"><%= i+1 %></span></span>
 						<span class="statusBox">身份</span>
 					</li>
 					<li>
@@ -315,6 +390,15 @@
 				<% } %>
 			</ul>
 		</script>
+		<script type="text/html" id="voteBoxs">
+			<% if(num){ %>
+			<% for(var k = 0; k < num; k++){ %>
+			<li data-voteid="<%= k+1%>">
+				<span class="mui-badge"><%= k+1%></span>
+			</li>
+			<% } %>
+			<% } %>
+		</script>
 	</head>
 
 	<body>
@@ -340,7 +424,7 @@
 			<div id="pageBody">
 
 			</div>
-			<div id="cover" class="ishide"></div>
+			<div class="cover ishide"></div>
 			<div class="pickerDiv ishide" id="pickerDiv">
 				<div id="picker">
 
@@ -354,6 +438,27 @@
 			<div id="txtBox">
 
 			</div>
+			<div id="voteBox" class="ishide">
+				<div>谁在第 <span id="dateBox">1</span> 轮投了 <span class="mui-badge mui-badge-primary">12</span> 号玩家</div>
+				<ul class="mui-clearfix">
+
+				</ul>
+				<div>
+					<button type="button" class="mui-btn">取消</button><button type="button" class="mui-btn mui-btn-primary">确认</button>
+				</div>
+				<div class="pickerDiv ishide" id="dateDiv">
+					<div>
+						<ul>
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+							<li>4</li>
+							<li>5</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		<script src="js/mui.min.js"></script>
@@ -368,13 +473,15 @@
 			userList(data);
 			pickerList(data);
 			userPicker(data);
+			voteList(data)
 			userBtn();
 
 			//玩家按钮功能
 			function userBtn() {
-				var ele, pickers, userPickers;
+				var ele, pickers, userPickers,userEle;
 				pickers = $('#pickerDiv');
 				userPickers = $('#userPickerDiv');
+				datepickers = $('#dateDiv');
 				$('#dataList>ul>li>.statusBox').on('tap', function(e) {
 					var set = seat(e);
 					ele = null;
@@ -391,24 +498,74 @@
 				$('.pickerDiv>div>ul>li').on('tap', function(e) {
 					var picker = $('.pickerDiv');
 					var text = e.target.innerHTML;
+					var btn = $(this).parent().parent().parent().attr('id');
+					console.log(btn);
 					$(ele).html(text);
 					picker.css({
 						display: 'none'
 					});
-					$('#cover').addClass('ishide');
+					if(btn && btn == 'dateDiv') {
+						return
+					} else {
+						$('.cover').addClass('ishide');
+					}
 				});
-				$('#cover').on('tap', function(e) {
+				$('.cover').on('tap', function(e) {
 					$('.pickerDiv').css({
 						display: 'none'
 					});
-					$(this).addClass('ishide');
-				})
+					$('.cover').addClass('ishide');
+					$('#voteBox').addClass('ishide');
+					$(userEle).removeClass('shadow');
+
+				});
 				$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
 					var set = seat(e);
 					ele = null;
 					ele = this;
 					picker(set, userPickers);
-				})
+				});
+				$('#dataList>ul>li:nth-child(1)>span:first-child').on('tap', function(e) {
+					userEle = null;
+					userEle = this;
+					var num = $(this).children().html() - 0;
+					$(this).toggleClass('shadow');
+					$('#voteBox>div:first-child>span:nth-child(2)').html(num);
+					$('#voteBox>ul>li>span').removeClass('mui-badge-primary');
+					$('.cover').removeClass('ishide');
+					$('#voteBox').toggleClass('ishide');
+				});
+				$('#voteBox>div:first-child>span:first-child').on('tap', function(e) {
+					console.log(e);
+					var set = seat(e);
+					ele = null;
+					ele = this;
+					picker(set, datepickers);
+				});
+				$('#voteBox>ul>li').on('tap', function(e) {
+					$(this).children().toggleClass('mui-badge-primary');
+				});
+				$('#voteBox>div:nth-child(3)>button:first-child').on('tap', function(e) {
+					$('#voteBox').toggleClass('ishide');
+					$('.cover').addClass('ishide');
+					$(userEle).removeClass('shadow');
+				});
+				$('#voteBox>div:nth-child(3)>button:last-child').on('tap', function(e) {
+					var list, targetUser, useArr, dateNum, dateList;
+					useArr = [];
+					targetUser = $('#voteBox>div:first-child>span:last-child').html() - 0;
+					dateNum = $('#voteBox>div:first-child>span:first-child').html() - 0;
+					dateList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + dateNum + ')');
+					list = $('#voteBox>ul>li>.mui-badge-primary');
+					$.each(list, function(index, item) {
+						var i = item.innerHTML - 1;
+						dateList[i].innerHTML = targetUser;
+					});
+					$('#voteBox').toggleClass('ishide');
+					$('.cover').addClass('ishide');
+					$(userEle).removeClass('shadow');
+				});
+
 			}
 			//位置
 			function seat(e) {
@@ -419,8 +576,8 @@
 				set.my = target.offsetTop;
 				set.width = target.offsetWidth;
 				set.height = target.offsetHeight;
-				set.clientWidth = target.offsetParent.clientWidth;
-				set.clientHeight = target.offsetParent.clientHeight;
+				set.clientWidth = e.path[4].clientWidth;
+				set.clientHeight = e.path[4].clientHeight;
 				return set;
 			}
 			//初始化数据
@@ -456,18 +613,27 @@
 			}
 			//生成玩家列表
 			function userList(data) {
-				console.log(data);
 				var box = null;
 				box = $('#pageBody');
 				box.html('');
 				var html = template("list", data);
 				box.html(html);
 			}
+			//生成投票多选框
+			function voteList(data) {
+				console.log(data);
+				var box = null;
+				box = $('#voteBox>ul');
+				box.html('');
+				var html = template("voteBoxs", data);
+				box.html(html);
+			}
 			//选择器
 			function picker(set, pickers) {
 				var picker, pickerBoxX, pickerBoxY, pickerBoxWidth, pickerBoxHeight, cover;
 				picker = pickers;
-				cover = $('#cover');
+				cover = $('.cover');
+				//				picker.toggleClass('ishide');
 				picker.css({
 					display: 'block',
 					opacity: '0'
@@ -475,19 +641,17 @@
 				cover.removeClass('ishide');
 				pickerBoxWidth = picker.width();
 				pickerBoxHeight = picker.height();
-				console.log(pickerBoxWidth)
 				pickerBoxX = (set.clientWidth - set.mx) < pickerBoxWidth ? (set.clientWidth - pickerBoxWidth) : set.mx;
-				pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - pickerBoxHeight / 2) + set.height / 2 : 8;
+				pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - pickerBoxHeight / 2) + set.height / 2 : 2;
 				picker.css({
 					top: pickerBoxY + 'px',
 					left: pickerBoxX + 'px',
 				});
 				picker.animate({
-					opacity: 1,
-					scaleY: 1.1
-				}, 120, 'ease-in');
+					opacity: 1
+				}, 150, 'ease-in');
 			}
-			box();
+
 			//详情盒子
 			function box() {
 				var boxBtn = $('.boxShow');
