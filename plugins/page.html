@@ -160,8 +160,6 @@
 				height: 10rem;
 			}
 			
-			.mui-poppicker .mui-pciker-list {}
-			
 			.ishide {
 				display: none;
 			}
@@ -299,7 +297,6 @@
 			
 			#voteBox>div:first-child .mui-badge {
 				padding: 0;
-				
 				font-size: 1rem;
 				line-height: 1.5rem;
 			}
@@ -335,6 +332,10 @@
 				line-height: 150%;
 			}
 			
+			#voteBox>ul .close {
+				background-color: rgba(0, 0, 0, .4);
+			}
+			
 			#voteBox>div:nth-child(3) {
 				padding: 5px;
 				text-align: center;
@@ -348,6 +349,43 @@
 				box-shadow: inset 1px 1px 2px #444;
 				transition: all 0.05s;
 			}
+			
+			#collectBox {
+				position: absolute;
+				top: 20%;
+				left: 10%;
+				width: 80%;
+				background-color: rgba(0, 0, 0, 0.5);
+				border-radius: 5px;
+				box-shadow: 0 0 5px black;
+				padding: 5px;
+			}
+			#collectBox>ul {
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: column;
+				-webkit-flex-direction: column;
+				height: 100%;
+			}
+			#collectBox>ul>li {
+				flex: 1;
+				-webkit-flex: 1;
+				min-height: 2rem;
+				margin-bottom: 2px;
+				padding: 5px;
+				background-color: seashell;
+				line-height: 175%;
+				border-radius: 5px;
+			}
+			#collectBox>ul>li>span {
+				font-size: 1rem;
+				margin-left: 2px;
+			}
+			#collectBox>ul>li>.mui-icon-arrowthinleft {
+				font-size: 1.5rem;
+				margin: 0 5px;
+			}
+			
 		</style>
 		<script src="js/template-web.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/html" id="list">
@@ -356,14 +394,14 @@
 				<% for(var i = 0; i < num; i++){ %>
 				<ul>
 					<li>
-						<span class="userBox"><span class="mui-badge"><%= i+1 %></span></span>
+						<span class="userBox"><span class="mui-badge"><%=i+1%></span></span>
 						<span class="statusBox">身份</span>
 					</li>
 					<li>
-						<span>-</span>
-						<span>-</span>
-						<span>-</span>
-						<span>-</span>
+						<span data-voteId="0" data-voteNum="<%=i%>">-</span>
+						<span data-voteId="1" data-voteNum="<%=i%>">-</span>
+						<span data-voteId="2" data-voteNum="<%=i%>">-</span>
+						<span data-voteId="3" data-voteNum="<%=i%>">-</span>
 					</li>
 					<li>
 						<span class="statusBox">-</span>
@@ -412,10 +450,10 @@
 				<div>
 					<div>投票结果</div>
 					<ul>
-						<li>1轮</li>
-						<li>2轮</li>
-						<li>3轮</li>
-						<li>4轮</li>
+						<li data-num="0">1轮</li>
+						<li data-num="1">2轮</li>
+						<li data-num="2">3轮</li>
+						<li data-num="3">4轮</li>
 					</ul>
 				</div>
 				<div>
@@ -458,7 +496,9 @@
 					</div>
 				</div>
 			</div>
-
+			<div id="collectBox" class="ishide">
+				<ul></ul>
+			</div>
 		</div>
 
 		<script src="js/mui.min.js"></script>
@@ -470,7 +510,9 @@
 		<script type="text/javascript">
 			window.onload = function() {
 				var data;
+				//初始化data;
 				data = initData();
+				//调用功能模块
 				userList(data);
 				pickerList(data);
 				userPicker(data);
@@ -479,10 +521,11 @@
 
 				//玩家按钮功能
 				function userBtn() {
-					var ele, pickers, userPickers, userEle;
+					var ele, pickers, userPickers, userEle, voteId, voteNum;
 					pickers = $('#pickerDiv');
 					userPickers = $('#userPickerDiv');
 					datepickers = $('#dateDiv');
+
 					$('#dataList>ul>li>.statusBox').on('tap', function(e) {
 						console.log(e);
 						var set = seat(e);
@@ -501,16 +544,24 @@
 						var picker = $('.pickerDiv');
 						var text = e.target.innerHTML;
 						var btn = $(this).parent().parent().parent().attr('id');
-						console.log(btn);
-						$(ele).html(text);
+						var voteList;
+						if(btn && btn == 'dateDiv') {
+							voteId = text - 1;
+							$(ele).html(text);
+							showBox(data);
+						} else if(btn && btn == 'userPickerDiv') {
+							voteList = data.vote[voteId];
+							voteList[voteNum].tar = text - 0;
+							$(ele).html(voteList[voteNum].tar ? voteList[voteNum].tar : '-');
+							$('.cover').addClass('ishide');
+						} else {
+							$(ele).html(text);
+							$('.cover').addClass('ishide');
+						}
 						picker.css({
 							display: 'none'
 						});
-						if(btn && btn == 'dateDiv') {
-							return
-						} else {
-							$('.cover').addClass('ishide');
-						}
+
 					});
 					$('.cover').on('tap', function(e) {
 						$('.pickerDiv').css({
@@ -525,17 +576,24 @@
 						var set = seat(e);
 						ele = null;
 						ele = this;
+						voteId = null;
+						voteId = $(this).attr('data-voteId');
+						voteNum = null;
+						voteNum = $(this).attr('data-voteNum');
 						picker(set, userPickers);
 					});
+
+					//玩家序号按钮功能
 					$('#dataList>ul>li:nth-child(1)>span:first-child').on('tap', function(e) {
 						userEle = null;
 						userEle = this;
 						var num = $(this).children().html() - 0;
 						$(this).toggleClass('shadow');
 						$('#voteBox>div:first-child>span:nth-child(2)').html(num);
-						$('#voteBox>ul>li>span').removeClass('mui-badge-primary');
 						$('.cover').removeClass('ishide');
+						showBox(data);
 						$('#voteBox').toggleClass('ishide');
+
 					});
 					$('#voteBox>div:first-child>span:first-child').on('tap', function(e) {
 						console.log(e);
@@ -545,7 +603,17 @@
 						picker(set, datepickers);
 					});
 					$('#voteBox>ul>li').on('tap', function(e) {
-						$(this).children().toggleClass('mui-badge-primary');
+						var btn = $(this).children()
+						var i = $('#voteBox>div:nth-child(1)>span:first-child').html() - 1;
+						var tarObj = data.vote[i];
+						if(!btn.hasClass('close')) {
+							var index = btn.html() - 1;
+							var tar = tarObj[index];
+							var num = $('#voteBox>div:nth-child(1)>span:last-child').html() - 0;
+							btn.toggleClass('mui-badge-primary');
+							tar.tar = (btn.attr('class')) === 'mui-badge mui-badge-primary' ? num : null;
+						}
+						console.log(data);
 					});
 					$('#voteBox>div:nth-child(3)>button:first-child').on('tap', function(e) {
 						$('#voteBox').toggleClass('ishide');
@@ -553,20 +621,103 @@
 						$(userEle).removeClass('shadow');
 					});
 					$('#voteBox>div:nth-child(3)>button:last-child').on('tap', function(e) {
-						var list, targetUser, useArr, dateNum, dateList;
-						useArr = [];
+						var list, targetUser, useArr, dateNum, dateList, tarList;
+
 						targetUser = $('#voteBox>div:first-child>span:last-child').html() - 0;
 						dateNum = $('#voteBox>div:first-child>span:first-child').html() - 0;
+						tarList = data.vote[dateNum - 1];
 						dateList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + dateNum + ')');
 						list = $('#voteBox>ul>li>.mui-badge-primary');
-						$.each(list, function(index, item) {
-							var i = item.innerHTML - 1;
-							dateList[i].innerHTML = targetUser;
+						$.each(tarList, function(index, item) {
+							var tar = item.tar;
+							if(tar && (tar === targetUser)) {
+								$(dateList[index]).html(targetUser);
+							} else if(!tar) {
+								$(dateList[index]).html('-');
+							}
 						});
 						$('#voteBox').toggleClass('ishide');
 						$('.cover').addClass('ishide');
 						$(userEle).removeClass('shadow');
 					});
+					//投票结果汇总按钮
+					$('#header>div:nth-child(2)>ul>li').on('tap', function(e) {
+						var collectBox = $('#collectBox>ul');
+						var index = $(this).attr('data-num');
+						var voteList = data.vote[index];
+						var obj = {};
+						collectBox.html('');
+						$.each(voteList, function(index, item) {
+							if(item.tar) {
+								if(obj[item.tar]) {
+									obj[item.tar].push(index);
+								} else {
+									obj[item.tar] = [];
+									obj[item.tar].push(index);
+								}
+							}
+						});
+						var html = '';
+						for(var k in obj) {
+							var num = 0;
+							console.log(obj);
+							html += '<li><span class="mui-badge mui-badge-danger">' + k + '</span><span class="mui-icon mui-icon-arrowthinleft"></span>';
+							while(obj[k].length > num) {
+								html += '<span class="mui-badge mui-badge-primary">' + (obj[k][num]+1) + '</span>';
+								num++;
+							}
+							html += '</li>';
+						};
+						collectBox.html(html);
+						if(html){
+							$('#collectBox').toggleClass('ishide');
+						}
+					});
+				}
+				//删除指定元素
+				function remove(arr, item) {
+					var result = [];
+					//					var item = arr.splice(i);
+					for(var i = 0; i < arr.length; i++) {
+						if(arr[i] != item) {
+							result.push(arr[i]);
+						}
+					}
+					return result;
+				}
+				//选择展示
+				function showBox(data) {
+					var voteObj = data.vote;
+					var indexNum = $('#voteBox>div:nth-child(1)>span:last-child').html() - 0;
+					var dateList = $('#voteBox>ul>li>span');
+					dateList.removeClass('mui-badge-primary close');
+					var num = $('#voteBox>div:nth-child(1)>span:first-child').html() - 0;
+					var numList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + num + ')');
+					var voteArr = voteObj[num - 1];
+					$.each(voteArr, function(index, item) {
+						var btn = $(dateList[index]);
+						if(item.tar) {
+							if(item.tar === indexNum) {
+								btn.removeClass('close');
+								btn.addClass('mui-badge-primary');
+							} else {
+								btn.addClass('close');
+							}
+						} else {}
+
+					});
+					//					var num = $('#voteBox>div:nth-child(1)>span:first-child').html() - 0;
+					//					var numList = $('#dataList>ul>li:nth-child(2)>span:nth-child(' + num + ')');
+					//					var dateList = $('#voteBox>ul>li>span');
+					//					var arr = [];
+					//					$.each(numList, function(index, item) {
+					//						console.log($(item).html());
+					//						console.log(indexNum);
+					//						if($(item).html() == indexNum) {
+					//							$(dateList[index]).addClass('mui-badge-primary');
+					//						}
+					//					});
+					//					console.log(numList);
 				}
 				//位置
 				function seat(e) {
@@ -586,7 +737,9 @@
 					var data = JSON.parse(localStorage.getItem('pluginData'));
 					var roleList = data.roleList;
 					var arr = [];
-
+					var voteObj = {};
+					var num = data.num - 0;
+					var voteList = $('#header>div:nth-child(2)>ul>li');
 					$.each(roleList, function(index, item) {
 						var obj = {};
 						obj.value = index + 1;
@@ -594,7 +747,19 @@
 						arr.push(obj);
 					});
 					data.roleList = arr;
+					for(var j = 0; j < voteList.length; j++) {
+						var voteArr = [];
+						for(var i = 0; i < num; i++) {
+							var obj = {};
+							obj.tar = null;
+							voteArr.push(obj);
+						}
+						voteObj[j] = voteArr;
+					}
+					data.vote = voteObj;
+					console.log(data);
 					return data;
+
 				}
 				//生成选择器列表
 				function pickerList(data) {
@@ -603,6 +768,7 @@
 					box.html('');
 					var html = template("pickers", data);
 					box.html(html);
+					$('#picker>ul').append('<li>不明</li>');
 				}
 
 				function userPicker(data) {
@@ -611,6 +777,7 @@
 					box.html('');
 					var html = template("userPickers", data);
 					box.html(html);
+					$('#userPicker>ul').append('<li>-</li>');
 				}
 				//生成玩家列表
 				function userList(data) {
@@ -622,7 +789,6 @@
 				}
 				//生成投票多选框
 				function voteList(data) {
-					console.log(data);
 					var box = null;
 					box = $('#voteBox>ul');
 					box.html('');
@@ -643,7 +809,7 @@
 					pickerBoxWidth = picker.width();
 					pickerBoxHeight = picker.height();
 					pickerBoxX = (set.clientWidth - set.mx) < pickerBoxWidth ? (set.clientWidth - pickerBoxWidth) : set.mx;
-					pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - pickerBoxHeight / 2) + set.height / 2 : 2;
+					pickerBoxY = (set.my > pickerBoxHeight / 2) ? (set.my - (pickerBoxHeight / 2)) + set.height / 2 : 2;
 					picker.css({
 						top: pickerBoxY + 'px',
 						left: pickerBoxX + 'px',
