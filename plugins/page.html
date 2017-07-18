@@ -570,7 +570,7 @@
 						$('.cover').addClass('ishide');
 						$('#voteBox').addClass('ishide');
 						$(userEle).removeClass('shadow');
-						$('#collectBox').toggleClass('ishide');
+						$('#collectBox').addClass('ishide');
 
 					});
 					$('#dataList>ul>li:nth-child(2)>span').on('tap', function(e) {
@@ -671,8 +671,8 @@
 						};
 						collectBox.html(html);
 						if(html){
-							$('#collectBox').toggleClass('ishide');
-							$('.cover').toggleClass('ishide');
+							$('#collectBox').removeClass('ishide');
+							$('.cover').removeClass('ishide');
 						}
 					});
 				}
